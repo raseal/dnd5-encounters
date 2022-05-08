@@ -3,7 +3,9 @@
   "autoload": {
     "psr-4": {
       "Shared\\": "src/Shared",
-      "SymfonyClient\\": "apps/SymfonyClient/src"
+      "EncounterAPI\\": "apps/EncounterAPI/src",
+      "Builder\\": "src/Builder",
+      "Tracker\\": "src/Tracker"
     }
   },
   "autoload-dev": {
@@ -12,11 +14,11 @@
     }
   },
   "extra": {
-    "bin-dir": "apps/SymfonyClient/bin",
-    "config-dir": "apps/SymfonyClient/config",
-    "src-dir": "apps/SymfonyClient/src",
-    "var-dir": "apps/SymfonyClient/var",
-    "public-dir": "apps/SymfonyClient/public"
+    "bin-dir": "apps/EncounterAPI/bin",
+    "config-dir": "apps/EncounterAPI/config",
+    "src-dir": "apps/EncounterAPI/src",
+    "var-dir": "apps/EncounterAPI/var",
+    "public-dir": "apps/EncounterAPI/public"
   },
   "require": {
     "symfony/flex": "^1.13",
@@ -39,6 +41,13 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
-    "dg/bypass-finals": "^1.3"
+    "dg/bypass-finals": "^1.3",
+    "phpstan/phpstan": "^1.6"
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/flex": true,
+      "symfony/runtime": true
+    }
   }
 }
