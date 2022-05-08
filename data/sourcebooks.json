@@ -1,0 +1,27 @@
+{
+  "book": [
+    {
+      "key": "FTB",
+      "title": "Fizban's Treasury of Dragons"
+    },
+    {
+      "key": "PHB",
+      "title": "Player's Handbook"
+    },{
+      "key": "TCE",
+      "title": "Tasha's Cauldron of Everything"
+    },{
+      "key": "XGE",
+      "title": "Xanathar's Guide to Everything"
+    },{
+      "key": "BGDIA",
+      "title": "Baldur's Gate: Descent into Avernus"
+    },{
+      "key": "DMG",
+      "title": "Dungeons Master Guide"
+    },{
+      "key": "MM",
+      "title": "Monsters Manual"
+    }
+  ]
+}

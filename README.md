@@ -4,7 +4,7 @@ Run `make build` in order to install all application dependencies (you must have
 For more commands, type `make help`
 
 # TODO
-
+* sourcebook (id, name)
 * campaign (id, name)
 * character (id, name, lvl, hp, ac)
 * party (campaign_id, character_id)
