@@ -1,9 +1,9 @@
 /vendor
 /.idea
+/var
 
 ###> symfony/framework-bundle ###
 /.env.local
-/.env.local.php
 /.env.*.local
 /apps/EncounterAPI/config/secrets/prod/prod.decrypt.private.php
 /apps/EncounterAPI/public/bundles/
