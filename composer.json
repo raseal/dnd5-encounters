@@ -4,8 +4,7 @@
     "psr-4": {
       "Shared\\": "src/Shared",
       "EncounterAPI\\": "apps/EncounterAPI/src",
-      "Builder\\": "src/Builder",
-      "Tracker\\": "src/Tracker"
+      "Encounter\\": "src/Encounter"
     }
   },
   "autoload-dev": {
@@ -34,7 +33,9 @@
     "symfony/property-access": "^5.3",
     "doctrine/doctrine-bundle": "^2.4",
     "doctrine/orm": "^2.9",
-    "doctrine/doctrine-migrations-bundle": "^3.1"
+    "doctrine/doctrine-migrations-bundle": "^3.1",
+    "ext-mongodb": "*",
+    "mongodb/mongodb": "^1.12"
   },
   "scripts": {
     "auto-scripts": {

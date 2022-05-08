@@ -7,7 +7,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 COPY xdebug.ini /usr/local/etc/php/conf.d/
 
 RUN apk --update upgrade \
-    && apk add --no-cache autoconf automake make gcc g++ bash icu-dev libzip-dev \
+    && apk add --no-cache autoconf automake make gcc g++ bash icu-dev libzip-dev libssl1.1 openssl-dev\
     && docker-php-ext-install -j$(nproc) \
         bcmath \
         opcache \
@@ -16,6 +16,11 @@ RUN apk --update upgrade \
         pdo_mysql
 
 RUN pecl install xdebug
+
+RUN pecl install mongodb
+
+RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini &&\
+    php --ri mongodb
 
 RUN docker-php-ext-enable \
         opcache \

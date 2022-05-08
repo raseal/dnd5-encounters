@@ -42,3 +42,15 @@ services:
     volumes:
       - ./var/MySQL:/var/lib/mysql
 
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb_container
+    ports:
+      - 27017:${MONGODB_PORT}
+    volumes:
+      - ./var/mongo:/data/db
+    command: [--auth]
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWD}
+
