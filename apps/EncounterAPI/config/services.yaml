@@ -17,6 +17,8 @@ services:
         resource: '../src/'
     Shared\:
         resource: '../../../src/Shared/'
+    Encounter\:
+        resource: '../../../src/Encounter/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -42,6 +44,16 @@ services:
         class: Symfony\Component\Serializer\Normalizer\PropertyNormalizer
         tags:
             - { name: serializer.normalizer }
+
+    MongoDB\Client:
+        class: MongoDB\Client
+        arguments:
+            - '%env(MONGODB_URI)%'
+
+    EncounterAPI\CLI\DataloaderCLI:
+        class: EncounterAPI\CLI\DataloaderCLI
+        arguments:
+            $database: '%env(MONGODB_DATABASE)%'
 
 framework:
     messenger:
