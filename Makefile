@@ -10,8 +10,8 @@ help: Makefile
 status:
 	@docker-compose ps
 
-## build:		Start container and install packages
-build: build-container start hooks composer-install
+## build:		Start container, install packages and prepare databases
+build: build-container start hooks composer-install load-mongo load-mysql-schema
 
 ## build-container:Rebuild a container
 build-container:
@@ -39,7 +39,7 @@ shell:
 
 ## install:	Install packages
 composer-install:
-	docker-compose exec php_container composer install
+	@docker-compose exec php_container composer install
 
 ## test:		Run all tests inside docker
 test:
@@ -52,6 +52,12 @@ analyse:
 ## run-tests:	Run all tests
 run-tests:
 	XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-text --exclude-group='disabled' --log-junit build/test_results/phpunit/junit.xml tests
+
+load-mongo:
+	@docker-compose exec php_container apps/EncounterAPI/bin/console dataloader:load
+
+load-mysql-schema:
+	@docker-compose exec php_container apps/EncounterAPI/bin/console doctrine:migrations:migrate --no-interaction
 
 hooks:
 	rm -rf .git/hooks
