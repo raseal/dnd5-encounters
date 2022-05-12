@@ -8,13 +8,10 @@ use Shared\Domain\Criteria\Filter\Filters;
 
 final class Criteria
 {
-    private const DEFAULT_OFFSET = 0;
-    private const DEFAULT_LIMIT = 5;
-
     public function __construct(
         private Filters $filters,
-        private int $offset = self::DEFAULT_OFFSET,
-        private int $limit = self::DEFAULT_LIMIT
+        private Offset $offset,
+        private Limit $limit
     ) {}
 
     public function filters(): Filters
@@ -22,12 +19,12 @@ final class Criteria
         return $this->filters;
     }
 
-    public function offset(): int
+    public function offset(): Offset
     {
         return $this->offset;
     }
 
-    public function limit(): int
+    public function limit(): Limit
     {
         return $this->limit;
     }
