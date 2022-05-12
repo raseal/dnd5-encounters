@@ -46,7 +46,7 @@ final class DataloaderCLI extends Command
 
     public function __construct(
         private Client $client,
-        private string $database
+        private string $mongoDBEncounters
     ) {
         parent::__construct();
     }
@@ -60,7 +60,7 @@ final class DataloaderCLI extends Command
         InputInterface $input,
         OutputInterface $output
     ): int {
-        $this->client->dropDatabase($this->database);
+        $this->client->dropDatabase($this->mongoDBEncounters);
 
         $output->writeln('<info>Loading extra data...</info>');
         $this->loadExtraData();
@@ -80,7 +80,7 @@ final class DataloaderCLI extends Command
 
         foreach (self::EXTRA_FILES as $collectionName => $jsonFile) {
             $json = $this->dataAsJsonArray($location.'/'.$jsonFile);
-            $collection = $this->client->selectCollection($this->database, $collectionName);
+            $collection = $this->client->selectCollection($this->mongoDBEncounters, $collectionName);
             $collection->insertMany($json[$collectionName]);
         }
     }
@@ -98,7 +98,7 @@ final class DataloaderCLI extends Command
     private function load(string $collectionName, array $files): void
     {
         $location = $this->getFilesDir($collectionName);
-        $collection = $this->client->selectCollection($this->database, $collectionName);
+        $collection = $this->client->selectCollection($this->mongoDBEncounters, $collectionName);
 
         foreach ($files as $jsonFile) {
             $json = $this->dataAsJsonArray($location.'/'.$jsonFile);
