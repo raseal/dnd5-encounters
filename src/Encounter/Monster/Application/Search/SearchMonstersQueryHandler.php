@@ -15,13 +15,14 @@ use Shared\Domain\Criteria\Offset;
 final class SearchMonstersQueryHandler implements QueryHandler
 {
     private const NAME = 'name';
+    private const SOURCE = 'source';
 
     private const VALID_FILTERS = [
         self::NAME => [
             FilterOperator::LIKE,
             FilterOperator::EQ,
         ],
-        'source' => [
+        self::SOURCE => [
             FilterOperator::LIKE,
             FilterOperator::EQ,
         ],

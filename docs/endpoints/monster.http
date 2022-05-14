@@ -1,0 +1,2 @@
+# Search monster by name (containing the word "dragon" from the "Monster manual") and limiting to the first 10 records
+GET {{url}}/monsters?filter[name][like]=dragon&filter[source][like]=mm&page=1&limit=10

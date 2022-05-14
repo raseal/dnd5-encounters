@@ -1,0 +1,4 @@
+search_monster:
+  path: /monsters/
+  controller: EncounterAPI\Controller\Monster\SearchMonstersController
+  methods: [GET]
