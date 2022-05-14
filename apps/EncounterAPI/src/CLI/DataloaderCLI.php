@@ -67,6 +67,8 @@ final class DataloaderCLI extends Command
 
         $output->writeln('<info>Loading bestiary...</info>');
         $this->loadBestiary();
+        $output->writeln('<info>Normalizing bestiary...</info>');
+        $this->discardInvalidMonsters();
 
         $output->writeln('<info>Loading spells...</info>');
         $this->loadSpells();
@@ -80,14 +82,31 @@ final class DataloaderCLI extends Command
 
         foreach (self::EXTRA_FILES as $collectionName => $jsonFile) {
             $json = $this->dataAsJsonArray($location.'/'.$jsonFile);
-            $collection = $this->client->selectCollection($this->mongoDBEncounters, $collectionName);
-            $collection->insertMany($json[$collectionName]);
+
+            $this->client
+                ->selectCollection($this->mongoDBEncounters, $collectionName)
+                ->insertMany($json[$collectionName]);
         }
     }
 
     private function loadBestiary(): void
     {
         $this->load(self::MONSTER, self::MONSTER_FILES);
+    }
+
+    private function discardInvalidMonsters(): void
+    {
+        $this->client
+            ->selectCollection($this->mongoDBEncounters, self::MONSTER)
+            ->deleteMany(
+                [
+                    '$or' => [
+                        ['isNpc' => true],
+                        ['_copy' => ['$exists' => true]],
+                        ['cr' => ['$exists' => false]],
+                    ]
+                ]
+            );
     }
 
     private function loadSpells(): void
