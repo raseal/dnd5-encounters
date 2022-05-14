@@ -24,7 +24,7 @@ final class Filters extends Collection
         $items = [];
 
         foreach ($filters as $filterField => $filter) {
-            $operator = array_keys($filter)[0];
+            $operator = (string) array_keys($filter)[0];
             $value = $filter[$operator];
 
             if (empty($validFilters[$filterField]) || !in_array($operator, $validFilters[$filterField])) {
