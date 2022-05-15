@@ -51,8 +51,16 @@ final class Version20220508143558 extends AbstractMigration
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
         ");
 
+        $this->addSql("CREATE TABLE `campaign` (
+            `id` varchar(36) NOT NULL,
+            `type` varchar(150) NOT NULL,
+            PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
+        ");
+
         $this->addSql("CREATE TABLE `character` (
             `id` varchar(36) not null,
+            `campaign_id` varchar(36) not null,
             `name` varchar(250) not null,
             `player_name` varchar(150) not null,
             `level` int DEFAULT 1,
@@ -60,19 +68,22 @@ final class Version20220508143558 extends AbstractMigration
             `hp` int,
             `speed` int DEFAULT 30,
             `img` varchar(250),
-            PRIMARY KEY (`id`)
+            PRIMARY KEY (`id`),
+            KEY `campaign_id` (`campaign_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
         ");
 
         $this->addSql("CREATE TABLE `encounter` (
             `id` varchar(36) not null,
+            `campaign_id` varchar(36) not null,
             `difficulty` varchar(6) not null,
             `total_experience` int,
             `experience_per_player` int, 
             `last_updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             `current_round` int not null default 1,
             `current_turn` int not null default 1, 
-            PRIMARY KEY (`id`)
+            PRIMARY KEY (`id`),
+            KEY `campaign_id` (`campaign_id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
         ");
 
@@ -95,6 +106,7 @@ final class Version20220508143558 extends AbstractMigration
         $this->addSql("DROP TABLE `source_book`");
         $this->addSql("DROP TABLE `monster_type`");
         $this->addSql("DROP TABLE `monster`");
+        $this->addSql("DROP TABLE `campaign`");
         $this->addSql("DROP TABLE `character`");
         $this->addSql("DROP TABLE `encounter`");
         $this->addSql("DROP TABLE `encounter_participant`");
