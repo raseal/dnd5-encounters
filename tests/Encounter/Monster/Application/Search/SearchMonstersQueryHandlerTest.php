@@ -50,7 +50,5 @@ final class SearchMonstersQueryHandlerTest extends TestCase
         );
 
         $this->assertEquals($expectedResponse, $response);
-
-
     }
 }
