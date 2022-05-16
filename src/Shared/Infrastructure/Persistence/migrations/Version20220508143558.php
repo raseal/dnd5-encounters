@@ -54,6 +54,8 @@ final class Version20220508143558 extends AbstractMigration
         $this->addSql("CREATE TABLE `campaign` (
             `id` varchar(36) NOT NULL,
             `name` varchar(150) NOT NULL,
+            `active` TINYINT(1) DEFAULT 1,
+            `created_at` DATETIME NOT NULL DEFAULT current_timestamp,
             PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
         ");

@@ -1,0 +1,4 @@
+create_campaign:
+  path: /campaigns
+  controller: EncounterAPI\Controller\Campaign\CreateCampaignController
+  methods: [POST]

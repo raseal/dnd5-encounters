@@ -1,0 +1,7 @@
+# Creates a new campaign
+POST {{url}}/campaigns
+
+{
+  "campaignName": "{{campaignName}}",
+  "campaignActive": "{{campaignActive}}"
+}
