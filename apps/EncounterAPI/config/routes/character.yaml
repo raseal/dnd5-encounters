@@ -1,0 +1,4 @@
+create_character:
+  path: /characters
+  controller: EncounterAPI\Controller\Character\CreateCharacterController
+  methods: [POST]

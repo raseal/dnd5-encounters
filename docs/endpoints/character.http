@@ -1,0 +1,13 @@
+# Creates a new character
+POST {{url}}/characters
+
+{
+  "characterName": "{{characterName}}",
+  "playerName": "{{playerName}}",
+  "campaignId": "{{campaignId}}",
+  "characterLevel": "{{characterLevel}}",
+  "characterAc": "{{characterAC}}",
+  "characterHp": "{{characterHP}}",
+  "characterSpeed": "{{characterSpeed}}",
+  "characterImg": "{{characterImg}}"
+}
