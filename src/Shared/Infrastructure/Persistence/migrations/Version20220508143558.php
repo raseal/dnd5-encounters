@@ -60,7 +60,7 @@ final class Version20220508143558 extends AbstractMigration
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
         ");
 
-        $this->addSql("CREATE TABLE `character` (
+        $this->addSql("CREATE TABLE `player_character` (
             `id` varchar(36) not null,
             `campaign_id` varchar(36) not null,
             `name` varchar(250) not null,

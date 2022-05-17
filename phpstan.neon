@@ -1,8 +1,10 @@
 parameters:
-     level: max
+     level: 8
      checkMissingIterableValueType: false
      checkGenericClassInNonGenericObjectType: false
      paths:
          - src
      excludePaths:
          - src/Shared/Infrastructure/Symfony
+     ignoreErrors:
+         - "#Cannot access offset '[a-zA-Z0-9_]+' on array<string, mixed>\\|false.#"
