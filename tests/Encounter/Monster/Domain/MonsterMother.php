@@ -10,7 +10,6 @@ use Encounter\Monster\Domain\Monster;
 use Encounter\Monster\Domain\MonsterArmorClass;
 use Encounter\Monster\Domain\MonsterHPAverage;
 use Encounter\Monster\Domain\MonsterHPMax;
-use Encounter\Monster\Domain\MonsterId;
 use Encounter\Monster\Domain\MonsterImg;
 use Encounter\Monster\Domain\MonsterName;
 use Encounter\Monster\Domain\MonsterSize;
@@ -20,7 +19,6 @@ use Encounter\Monster\Domain\SourceBook;
 final class MonsterMother
 {
     public static function create(
-        MonsterId $monsterId,
         MonsterName $monsterName,
         SourceBook $sourceBook,
         Page $page,
@@ -33,7 +31,7 @@ final class MonsterMother
         MonsterArmorClass $armorClass
     ): Monster {
         return new Monster(
-            $monsterId,
+            null,
             $monsterName,
             $sourceBook,
             $page,
@@ -50,7 +48,6 @@ final class MonsterMother
     public static function random(): Monster
     {
         return self::create(
-            MonsterIdMother::random(),
             MonsterNameMother::random(),
             SourceBookMother::random(),
             PageMother::random(),

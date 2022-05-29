@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Encounter\Monster\Domain;
 
+use function md5;
+use function sprintf;
+
 final class Monster
 {
+    private MonsterId $monsterId;
+
     public function __construct(
-        private MonsterId $monsterId,
+        ?MonsterId $monsterId,
         private MonsterName $monsterName,
         private SourceBook $sourceBook,
         private Page $page,
@@ -18,7 +23,11 @@ final class Monster
         private MonsterHPAverage $HPAverage,
         private MonsterHPMax $HPMax,
         private MonsterArmorClass $armorClass
-    ) {}
+    ) {
+        if (null === $monsterId) {
+           $this->generateMonsterId();
+        }
+    }
 
     public function monsterId(): MonsterId
     {
@@ -60,12 +69,12 @@ final class Monster
         return $this->initiativeBonus;
     }
 
-    public function hPAverage(): MonsterHPAverage
+    public function HPAverage(): MonsterHPAverage
     {
         return $this->HPAverage;
     }
 
-    public function hPMax(): MonsterHPMax
+    public function HPMax(): MonsterHPMax
     {
         return $this->HPMax;
     }
@@ -73,5 +82,19 @@ final class Monster
     public function armorClass(): MonsterArmorClass
     {
         return $this->armorClass;
+    }
+
+    private function generateMonsterId(): void
+    {
+        $hash = md5(
+            sprintf(
+                '%s%s%s',
+                $this->monsterName->value(),
+                $this->sourceBook->value(),
+                $this->page->value()
+            )
+        );
+
+        $this->monsterId = new MonsterId($hash);
     }
 }
