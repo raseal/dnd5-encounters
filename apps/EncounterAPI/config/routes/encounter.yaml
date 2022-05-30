@@ -1,0 +1,4 @@
+create_encounter:
+  path: /encounters
+  controller: EncounterAPI\Controller\Encounter\CreateEncounterController
+  methods: [POST]
