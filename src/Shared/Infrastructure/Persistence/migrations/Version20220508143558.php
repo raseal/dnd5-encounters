@@ -19,28 +19,13 @@ final class Version20220508143558 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql("CREATE TABLE `source_book` (
-            `id` varchar(36) NOT NULL,
-            `name` varchar(150) NOT NULL,
-            PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
-        ");
-
-        $this->addSql("CREATE TABLE `monster_type` (
-            `id` varchar(36) NOT NULL,
-            `type` varchar(150) NOT NULL,
-            PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
-        ");
-
         $this->addSql("CREATE TABLE `monster` (
             `id` varchar(36) NOT NULL,
             `name` varchar(250) NOT NULL,
-            `sourcebook_id` varchar(36) DEFAULT NULL,
+            `sourcebook` varchar(100) DEFAULT NULL,
             `page` int,
-            `type_id` varchar(36) NOT NULL,
-            `size` char(1) NOT NULL,
-            `cr` char(3) NOT NULL,
+            `size` char(10) NOT NULL,
+            `cr` decimal(5,3) NOT NULL,
             `img` varchar(250) DEFAULT NULL,
             `init_bonus` int DEFAULT 0,
             `hp_avg` int,
@@ -79,6 +64,8 @@ final class Version20220508143558 extends AbstractMigration
             `id` varchar(36) not null,
             `campaign_id` varchar(36) not null,
             `difficulty` varchar(6) not null,
+            `in_progress`  TINYINT(1) DEFAULT 0,
+            `name` varchar(250) not null,
             `total_experience` int,
             `experience_per_player` int, 
             `last_updated` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -93,7 +80,7 @@ final class Version20220508143558 extends AbstractMigration
             `id` varchar(36) not null,
             `encounter_id` varchar(36) not null,
             `participant_id` varchar(36) not null,
-            `participant_type` enum ('C', 'M') COMMENT 'C: character - M: monster',
+            `participant_type` varchar(1) COMMENT 'C: character - M: monster',
             `initiative_roll` int,
             `max_hp` int,
             `current_hp` int, 
@@ -105,11 +92,9 @@ final class Version20220508143558 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql("DROP TABLE `source_book`");
-        $this->addSql("DROP TABLE `monster_type`");
         $this->addSql("DROP TABLE `monster`");
         $this->addSql("DROP TABLE `campaign`");
-        $this->addSql("DROP TABLE `character`");
+        $this->addSql("DROP TABLE `player_character`");
         $this->addSql("DROP TABLE `encounter`");
         $this->addSql("DROP TABLE `encounter_participant`");
     }
