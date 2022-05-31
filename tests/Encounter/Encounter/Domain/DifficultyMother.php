@@ -16,9 +16,8 @@ final class DifficultyMother
 
     public static function random(): Difficulty
     {
-        $values = Difficulty::VALID_TYPES;
-        $randomIndex = Factory::create()->numberBetween(0, count($values) - 1);
-
-        return self::create($values[$randomIndex]);
+        return self::create(
+            Factory::create()->randomElement(Difficulty::VALID_TYPES)
+        );
     }
 }

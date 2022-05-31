@@ -9,14 +9,14 @@ use Shared\Domain\ValueObject\StringValueObject;
 
 final class MonsterSize extends StringValueObject
 {
-    private const TINY = 'Tiny';
-    private const SMALL = 'Small';
-    private const MEDIUM = 'Medium';
-    private const LARGE = 'Large';
-    private const HUGE = 'Huge';
-    private const GARGANTUAN = 'Gargantuan';
+    public const TINY = 'Tiny';
+    public const SMALL = 'Small';
+    public const MEDIUM = 'Medium';
+    public const LARGE = 'Large';
+    public const HUGE = 'Huge';
+    public const GARGANTUAN = 'Gargantuan';
 
-    private const VALID_TYPES = [
+    public const VALID_TYPES = [
         'tiny' => self::TINY,
         'small' => self::SMALL,
         'medium' => self::MEDIUM,

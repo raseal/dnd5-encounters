@@ -18,7 +18,7 @@ final class SourceBook extends StringValueObject
     public const TCE = 'Tasha\'s Cauldron of Everything';
     public const XGE = 'Xanathar\'s Guide to Everything';
 
-    private const VALID_TYPES = [
+    public  const VALID_TYPES = [
         'BGDIA' => self::BGDIA,
         'DMG' => self::DMG,
         'FTD' => self::FTD,

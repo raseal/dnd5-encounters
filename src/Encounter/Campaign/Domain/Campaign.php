@@ -26,9 +26,4 @@ final class Campaign
     {
         return $this->campaignActive;
     }
-
-    public function activate(): void
-    {
-        $this->campaignActive = new CampaignActive(true);
-    }
 }
