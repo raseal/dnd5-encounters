@@ -60,6 +60,10 @@ final class CreateCharacterCommandHandlerTest extends TestCase
             ->with($characterId)
             ->willReturn(null);
 
+        $this->characterRepository
+            ->expects(self::once())
+            ->method('save');
+
         $this->createCharacterCommandHandler->__invoke($command);
     }
 

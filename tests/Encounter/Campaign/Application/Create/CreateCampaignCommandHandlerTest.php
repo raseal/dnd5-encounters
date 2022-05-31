@@ -45,6 +45,10 @@ final class CreateCampaignCommandHandlerTest extends TestCase
             ->with($campaignId)
             ->willReturn(null);
 
+        $this->campaignRepository
+            ->expects(self::once())
+            ->method('save');
+
         $this->createCampaignCommandHandler->__invoke($command);
     }
 
