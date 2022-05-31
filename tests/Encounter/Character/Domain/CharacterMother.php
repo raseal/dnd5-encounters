@@ -56,4 +56,19 @@ final class CharacterMother
             CharacterImgMother::random()
         );
     }
+
+    public static function fromCampaignId(CampaignId $campaignId): Character
+    {
+        return self::create(
+            CharacterIdMother::random(),
+            CharacterNameMother::random(),
+            PlayerNameMother::random(),
+            $campaignId,
+            CharacterLevelMother::random(),
+            CharacterArmorClassMother::random(),
+            CharacterHPMother::random(),
+            CharacterSpeedMother::random(),
+            CharacterImgMother::random()
+        );
+    }
 }
