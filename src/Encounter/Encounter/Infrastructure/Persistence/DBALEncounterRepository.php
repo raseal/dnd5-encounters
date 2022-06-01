@@ -6,7 +6,7 @@ namespace Encounter\Encounter\Infrastructure\Persistence;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Encounter\Character\Domain\CharacterId;
+use Encounter\Character\Domain\Character;
 use Encounter\Encounter\Domain\Encounter;
 use Encounter\Encounter\Domain\EncounterId;
 use Encounter\Encounter\Domain\EncounterRepository;
@@ -25,6 +25,7 @@ final class DBALEncounterRepository implements EncounterRepository
 
     public function findById(EncounterId $encounterId): ?Encounter
     {
+        // TODO: fetch participants
         $qb = new QueryBuilder($this->connection);
         $result = $qb
             ->select('id, campaign_id, difficulty, in_progress, name, total_experience, experience_per_player, current_round, current_turn')
@@ -96,14 +97,14 @@ final class DBALEncounterRepository implements EncounterRepository
             );
         }
 
-        /** @var CharacterId $characterId */
-        foreach ($encounter->characterIds() as $characterId) {
+        /** @var Character $character */
+        foreach ($encounter->characters() as $character) {
             $this->assignParticipant(
                 $encounter->encounterId(),
-                $characterId->value(),
+                $character->characterId()->value(),
                 self::PLAYER_TYPE,
-                0,
-                0
+                $character->characterHP()->value(),
+                $character->characterHP()->value()
             );
         }
     }

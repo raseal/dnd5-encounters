@@ -6,10 +6,10 @@ namespace Encounter\Character\Domain;
 
 use Shared\Domain\Aggregate\Collection;
 
-final class CharacterIds extends Collection
+final class Characters extends Collection
 {
     protected function type(): string
     {
-        return CharacterId::class;
+        return Character::class;
     }
 }

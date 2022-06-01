@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Encounter\Encounter\Application\Create;
 
 use Encounter\Campaign\Domain\CampaignId;
+use Encounter\Character\Domain\Character;
 use Encounter\Character\Domain\CharacterId;
-use Encounter\Character\Domain\CharacterIds;
+use Encounter\Character\Domain\CharacterRepository;
+use Encounter\Character\Domain\Characters;
+use Encounter\Character\Domain\Exception\CharacterDoesNotExist;
 use Encounter\Encounter\Domain\EncounterId;
 use Encounter\Encounter\Domain\EncounterInProgress;
 use Encounter\Encounter\Domain\EncounterName;
@@ -29,7 +32,8 @@ use Shared\Domain\Bus\Command\CommandHandler;
 final class CreateEncounterCommandHandler implements CommandHandler
 {
     public function __construct(
-        private CreateEncounter $createEncounter
+        private CreateEncounter $createEncounter,
+        private CharacterRepository $characterRepository
     ) {}
 
     public function __invoke(CreateEncounterCommand $command): void
@@ -73,16 +77,27 @@ final class CreateEncounterCommandHandler implements CommandHandler
         return $collection;
     }
 
-    private function parseCharacters(array $players): CharacterIds
+    private function parseCharacters(array $players): Characters
     {
-        $collection = new CharacterIds([]);
+        $collection = new Characters([]);
 
         foreach ($players as $player) {
             $collection->add(
-                new CharacterId($player)
+                $this->retrieveCharacter($player)
             );
         }
 
         return $collection;
+    }
+
+    private function retrieveCharacter(string $characterId): Character
+    {
+        $character = $this->characterRepository->findById(new CharacterId($characterId));
+
+        if (null === $character) {
+            throw new CharacterDoesNotExist($characterId);
+        }
+
+        return $character;
     }
 }

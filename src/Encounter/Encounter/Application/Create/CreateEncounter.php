@@ -6,12 +6,10 @@ namespace Encounter\Encounter\Application\Create;
 
 use Encounter\Campaign\Domain\CampaignId;
 use Encounter\Campaign\Domain\CampaignRepository;
-use Encounter\Character\Domain\CharacterId;
-use Encounter\Character\Domain\CharacterIds;
-use Encounter\Character\Domain\CharacterRepository;
+use Encounter\Character\Domain\Character;
+use Encounter\Character\Domain\Characters;
 use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
-use Encounter\Character\Domain\Exception\CharacterDoesNotExist;
 use Encounter\Encounter\Domain\Encounter;
 use Encounter\Encounter\Domain\EncounterId;
 use Encounter\Encounter\Domain\EncounterInProgress;
@@ -28,7 +26,6 @@ final class CreateEncounter
     public function __construct(
         private EncounterRepository $encounterRepository,
         private CampaignRepository $campaignRepository,
-        private CharacterRepository $characterRepository,
         private CreateMonsters $createMonsters
     ) {}
 
@@ -40,11 +37,11 @@ final class CreateEncounter
         RoundNumber $roundNumber,
         TurnNumber $turnNumber,
         Monsters $monsters,
-        CharacterIds $characterIds
+        Characters $characters
     ): void {
         $this->ensureCampaignExists($campaignId);
         $this->ensureEncounterDoesNotExist($encounterId);
-        $this->ensurePlayersBelongToTheCampaign($campaignId, $characterIds);
+        $this->ensurePlayersBelongToTheCampaign($campaignId, $characters);
 
         $this->createMonsters->__invoke($monsters);
 
@@ -61,7 +58,7 @@ final class CreateEncounter
         );
 
         $encounter->addMonsters($monsters);
-        $encounter->addPlayersIds($characterIds);
+        $encounter->addPlayers($characters);
 
         $this->encounterRepository->save($encounter);
     }
@@ -84,18 +81,12 @@ final class CreateEncounter
         }
     }
 
-    private function ensurePlayersBelongToTheCampaign(CampaignId $campaignId, CharacterIds $characterIds): void
+    private function ensurePlayersBelongToTheCampaign(CampaignId $campaignId, Characters $characters): void
     {
-        /** @var CharacterId $characterId */
-        foreach ($characterIds as $characterId) {
-            $character = $this->characterRepository->findById($characterId);
-
-            if (null === $character) {
-                throw new CharacterDoesNotExist($characterId->value());
-            }
-
+        /** @var Character $character */
+        foreach ($characters as $character) {
             if ($character->campaignId()->value() !== $campaignId->value()) {
-                throw new CharacterDoesNotBelongToCampaign($characterId->value(), $campaignId->value());
+                throw new CharacterDoesNotBelongToCampaign($character->characterId()->value(), $campaignId->value());
             }
         }
     }

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Encounter\Encounter\Domain;
 
 use Encounter\Campaign\Domain\CampaignId;
-use Encounter\Character\Domain\CharacterIds;
+use Encounter\Character\Domain\Characters;
 use Encounter\Monster\Domain\Monsters;
 use Shared\Domain\Aggregate\AggregateRoot;
 
 final class Encounter extends AggregateRoot
 {
     private Monsters $monsters;
-    private CharacterIds $characterIds;
+    private Characters $characters;
 
     public function __construct(
         private EncounterId $encounterId,
@@ -26,7 +26,7 @@ final class Encounter extends AggregateRoot
         private TurnNumber $turnNumber
     ) {
         $this->monsters = new Monsters([]);
-        $this->characterIds = new CharacterIds([]);
+        $this->characters = new Characters([]);
         $this->difficulty = $this->difficulty ?? Difficulty::fromNone();
         $this->totalExperience = $this->totalExperience ?? new TotalExperience(0);
         $this->experiencePerPlayer = $this->experiencePerPlayer ?? new ExperiencePerPlayer(0);
@@ -39,10 +39,10 @@ final class Encounter extends AggregateRoot
         }
     }
 
-    public function addPlayersIds(CharacterIds $characterIds): void
+    public function addPlayers(Characters $characters): void
     {
-        foreach ($characterIds as $characterId) {
-            $this->characterIds->add($characterId);
+        foreach ($characters as $character) {
+            $this->characters->add($character);
         }
     }
 
@@ -81,9 +81,9 @@ final class Encounter extends AggregateRoot
         return $this->monsters;
     }
 
-    public function characterIds(): CharacterIds
+    public function characters(): Characters
     {
-        return $this->characterIds;
+        return $this->characters;
     }
 
     public function difficulty(): Difficulty

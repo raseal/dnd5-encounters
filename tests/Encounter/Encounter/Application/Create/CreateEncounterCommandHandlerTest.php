@@ -8,6 +8,7 @@ use Encounter\Campaign\Domain\CampaignRepository;
 use Encounter\Character\Domain\CharacterRepository;
 use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
+use Encounter\Character\Domain\Exception\CharacterDoesNotExist;
 use Encounter\Encounter\Application\Create\CreateEncounter;
 use Encounter\Encounter\Application\Create\CreateEncounterCommandHandler;
 use Encounter\Encounter\Domain\EncounterRepository;
@@ -36,9 +37,9 @@ final class CreateEncounterCommandHandlerTest extends TestCase
             new CreateEncounter(
                 $this->encounterRepository,
                 $this->campaignRepository,
-                $this->characterRepository,
                 $this->createMonsters
-            )
+            ),
+            $this->characterRepository
         );
     }
 
@@ -83,11 +84,31 @@ final class CreateEncounterCommandHandlerTest extends TestCase
     }
 
     /** @test */
+    public function should_fail_when_character_does_not_exist(): void
+    {
+        $this->expectException(CharacterDoesNotExist::class);
+
+        $command = CreateEncounterCommandMother::random();
+
+        $this->characterRepository
+            ->expects(self::once())
+            ->method('findById')
+            ->willReturn(null);
+
+        $this->createEncounterCommandHandler->__invoke($command);
+    }
+
+    /** @test */
     public function should_fail_when_campaign_does_not_exist(): void
     {
         $this->expectException(CampaignDoesNotExist::class);
 
         $command = CreateEncounterCommandMother::random();
+
+        $this->characterRepository
+            ->expects(self::atLeastOnce())
+            ->method('findById')
+            ->willReturn(CharacterMother::random());
 
         $this->campaignRepository
             ->expects(self::once())
