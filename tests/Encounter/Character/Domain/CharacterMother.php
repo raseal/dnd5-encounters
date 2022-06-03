@@ -71,4 +71,19 @@ final class CharacterMother
             CharacterImgMother::random()
         );
     }
+
+    public static function fromLevel(CharacterLevel $characterLevel): Character
+    {
+        return self::create(
+            CharacterIdMother::random(),
+            CharacterNameMother::random(),
+            PlayerNameMother::random(),
+            CampaignIdMother::random(),
+            $characterLevel,
+            CharacterArmorClassMother::random(),
+            CharacterHPMother::random(),
+            CharacterSpeedMother::random(),
+            CharacterImgMother::random()
+        );
+    }
 }

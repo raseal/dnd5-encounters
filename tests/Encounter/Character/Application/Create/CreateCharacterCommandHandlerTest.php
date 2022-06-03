@@ -10,6 +10,7 @@ use Encounter\Character\Application\Create\CreateCharacterCommandHandler;
 use Encounter\Character\Domain\CharacterRepository;
 use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterAlreadyExists;
+use Encounter\Character\Domain\Exception\InvalidCharacterLevel;
 use PHPUnit\Framework\TestCase;
 use Test\Encounter\Campaign\Domain\CampaignMother;
 use Test\Encounter\Character\Domain\CharacterIdMother;
@@ -99,6 +100,16 @@ final class CreateCharacterCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('findById')
             ->willReturn(null);
+
+        $this->createCharacterCommandHandler->__invoke($command);
+    }
+
+    /** @test */
+    public function should_fail_when_character_exceeds_level(): void
+    {
+        $this->expectException(InvalidCharacterLevel::class);
+
+        $command = CreateCharacterCommandMother::fromCharacterLevel(23);
 
         $this->createCharacterCommandHandler->__invoke($command);
     }

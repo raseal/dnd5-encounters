@@ -47,4 +47,19 @@ final class CreateCharacterCommandMother
             Factory::create()->text(10)
         );
     }
+
+    public static function fromCharacterLevel(int $level): CreateCharacterCommand
+    {
+        return self::create(
+            Factory::create()->uuid(),
+            Factory::create()->name(),
+            Factory::create()->name(),
+            Factory::create()->uuid(),
+            $level,
+            Factory::create()->numberBetween(10, 30),
+            Factory::create()->numberBetween(10, 300),
+            Factory::create()->numberBetween(20, 70),
+            Factory::create()->text(10)
+        );
+    }
 }

@@ -17,7 +17,7 @@ final class ChallengeRatingMother
     public static function random(): ChallengeRating
     {
         return self::create(
-            Factory::create()->randomFloat(2, 0.25, 40)
+            Factory::create()->randomFloat(0, 1, 30)
         );
     }
 }
