@@ -27,7 +27,7 @@ final class Encounter extends AggregateRoot
     ) {
         $this->monsters = new Monsters([]);
         $this->characters = new Characters([]);
-        $this->difficulty = $this->difficulty ?? Difficulty::fromNone();
+        $this->difficulty = $this->difficulty ?? Difficulty::none();
         $this->totalExperience = $this->totalExperience ?? new TotalExperience(0);
         $this->experiencePerPlayer = $this->experiencePerPlayer ?? new ExperiencePerPlayer(0);
     }
@@ -37,13 +37,19 @@ final class Encounter extends AggregateRoot
         foreach ($monsters as $monster) {
             $this->monsters->add($monster);
         }
+
+        $this->calculateDifficulty();
+        $this->calculateExperience();
     }
 
-    public function addPlayers(Characters $characters): void
+    public function addCharacters(Characters $characters): void
     {
         foreach ($characters as $character) {
             $this->characters->add($character);
         }
+
+        $this->calculateDifficulty();
+        $this->calculateExperience();
     }
 
     public function encounterId(): EncounterId
@@ -99,5 +105,20 @@ final class Encounter extends AggregateRoot
     public function experiencePerPlayer(): ExperiencePerPlayer
     {
         return $this->experiencePerPlayer;
+    }
+
+    private function calculateDifficulty(): void
+    {
+        $this->difficulty = Difficulty::fromParticipants($this->characters, $this->monsters);
+    }
+
+    private function calculateExperience(): void
+    {
+        if ($this->characters->count() > 0) {
+            $this->totalExperience = TotalExperience::fromMonsters($this->monsters);
+            $this->experiencePerPlayer = new ExperiencePerPlayer(
+                (int)($this->totalExperience()->value() / $this->characters->count())
+            );
+        }
     }
 }

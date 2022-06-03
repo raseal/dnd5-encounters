@@ -63,7 +63,7 @@ final class CreateEncounterCommandHandler implements CommandHandler
                         new SourceBook($monster['sourceBook']),
                         new Page((int) $monster['page']),
                         new MonsterSize($monster['size']),
-                        new ChallengeRating((int) $monster['cr']),
+                        new ChallengeRating((float) $monster['cr']),
                         new MonsterImg($monster['img']),
                         new InitiativeBonus((int) $monster['initBonus']),
                         new MonsterHPAverage((int) $monster['hpAvg']),

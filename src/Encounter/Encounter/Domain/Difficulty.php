@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Encounter\Encounter\Domain;
 
+use Encounter\Character\Domain\Characters;
 use Encounter\Encounter\Domain\Exception\InvalidEncounterDifficulty;
+use Encounter\Monster\Domain\Monsters;
 use Shared\Domain\ValueObject\StringValueObject;
 
 final class Difficulty extends StringValueObject
@@ -29,9 +31,33 @@ final class Difficulty extends StringValueObject
         parent::__construct($difficulty);
     }
 
-    public static function fromNone(): self
+    public static function none(): self
     {
         return new self(self::NONE);
+    }
+
+    public static function fromParticipants(Characters $characters, Monsters $monsters): self
+    {
+        $partyThreshold = Calculator::partyThreshold($characters);
+        $difficultyRating = Calculator::difficultyRating($monsters, $characters);
+        $difficulty = self::calculateDifficulty($partyThreshold, $difficultyRating);
+
+        return new self($difficulty);
+    }
+
+    private static function calculateDifficulty(array $partyThreshold, float $difficultyRating): string
+    {
+        $result = self::EASY;
+
+        foreach ($partyThreshold as $difficulty => $threshold) {
+            if ($threshold < $difficultyRating) {
+                $result = $difficulty;
+            } else {
+                return $result;
+            }
+        }
+
+        return self::DEADLY;
     }
 
     private function assertValidDifficulty(string $difficulty): void

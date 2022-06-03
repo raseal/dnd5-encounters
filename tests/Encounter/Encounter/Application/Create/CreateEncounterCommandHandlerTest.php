@@ -14,10 +14,12 @@ use Encounter\Encounter\Application\Create\CreateEncounterCommandHandler;
 use Encounter\Encounter\Domain\EncounterRepository;
 use Encounter\Encounter\Domain\Exception\EncounterAlreadyExists;
 use Encounter\Monster\Application\Create\CreateMonsters;
+use Encounter\Monster\Domain\Exception\InvalidChallengeRating;
 use PHPUnit\Framework\TestCase;
 use Test\Encounter\Campaign\Domain\CampaignMother;
 use Test\Encounter\Character\Domain\CharacterMother;
 use Test\Encounter\Encounter\Domain\EncounterMother;
+use Test\Encounter\Monster\Domain\MonsterMother;
 
 final class CreateEncounterCommandHandlerTest extends TestCase
 {
@@ -58,7 +60,7 @@ final class CreateEncounterCommandHandlerTest extends TestCase
     public function should_create_encounter(): void
     {
         $campaign = CampaignMother::random();
-        $command = CreateEncounterCommandMother::fromCampaignId($campaign->campaignId());
+        $command = CreateEncounterCommandMother::fromCampaignId($campaign->campaignId()->value());
         $character = CharacterMother::fromCampaignId($campaign->campaignId());
 
         $this->campaignRepository
@@ -79,6 +81,32 @@ final class CreateEncounterCommandHandlerTest extends TestCase
         $this->encounterRepository
             ->expects(self::once())
             ->method('save');
+
+        $this->createEncounterCommandHandler->__invoke($command);
+    }
+
+    /** @test */
+    public function should_fail_when_monster_exceeds_challenge_rating(): void
+    {
+        $this->expectException(InvalidChallengeRating::class);
+
+        $monster = MonsterMother::random();
+
+        $monster = [
+            'name' => $monster->monsterName()->value(),
+            'sourceBook' => $monster->sourceBook()->value(),
+            'page' => $monster->page()->value(),
+            'size' => $monster->monsterSize()->value(),
+            'cr' => 35,
+            'img' => $monster->monsterImg()->value(),
+            'initBonus' => $monster->initiativeBonus()->value(),
+            'hpAvg' => $monster->HPAverage()->value(),
+            'hpMax' => $monster->HPMax()->value(),
+            'ac' => $monster->armorClass()->value(),
+            'quantity' => 1,
+        ];
+
+        $command = CreateEncounterCommandMother::fromMonsters(array($monster));
 
         $this->createEncounterCommandHandler->__invoke($command);
     }
@@ -145,7 +173,7 @@ final class CreateEncounterCommandHandlerTest extends TestCase
         $this->expectException(CharacterDoesNotBelongToCampaign::class);
 
         $campaign = CampaignMother::random();
-        $command = CreateEncounterCommandMother::fromCampaignId($campaign->campaignId());
+        $command = CreateEncounterCommandMother::fromCampaignId($campaign->campaignId()->value());
         $character = CharacterMother::random();
 
         $this->campaignRepository

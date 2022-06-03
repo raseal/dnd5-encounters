@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Test\Encounter\Encounter\Application\Create;
 
-use Encounter\Campaign\Domain\CampaignId;
 use Encounter\Encounter\Application\Create\CreateEncounterCommand;
 use Faker\Factory;
 use Test\Encounter\Character\Domain\CharacterIdMother;
@@ -48,13 +47,27 @@ final class CreateEncounterCommandMother
         );
     }
 
-    public static function fromCampaignId(CampaignId $campaignId): CreateEncounterCommand
+    public static function fromCampaignId(string $campaignId): CreateEncounterCommand
     {
         return self::create(
             Factory::create()->uuid(),
-            $campaignId->value(),
+            $campaignId,
             Factory::create()->boolean(),
             self::generateRandomMonsters(),
+            self::generateRandomCharacters(),
+            Factory::create()->name(),
+            Factory::create()->numberBetween(0, 15),
+            Factory::create()->numberBetween(0, 15)
+        );
+    }
+
+    public static function fromMonsters(array $monsters): CreateEncounterCommand
+    {
+        return self::create(
+            Factory::create()->uuid(),
+            Factory::create()->uuid(),
+            Factory::create()->boolean(),
+            $monsters,
             self::generateRandomCharacters(),
             Factory::create()->name(),
             Factory::create()->numberBetween(0, 15),

@@ -58,7 +58,7 @@ final class CreateEncounter
         );
 
         $encounter->addMonsters($monsters);
-        $encounter->addPlayers($characters);
+        $encounter->addCharacters($characters);
 
         $this->encounterRepository->save($encounter);
     }
