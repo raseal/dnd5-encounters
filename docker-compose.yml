@@ -45,6 +45,7 @@ services:
   mongodb:
     image: mongo:5.0
     container_name: mongodb_container
+    restart: always
     ports:
       - 27017:${MONGODB_PORT}
     volumes:
