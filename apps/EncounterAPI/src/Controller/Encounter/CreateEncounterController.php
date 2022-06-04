@@ -7,11 +7,14 @@ namespace EncounterAPI\Controller\Encounter;
 use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
 use Encounter\Character\Domain\Exception\CharacterDoesNotExist;
+use Encounter\Character\Domain\Exception\InvalidCharacterLevel;
 use Encounter\Encounter\Application\Create\CreateEncounterCommand;
 use Encounter\Encounter\Domain\Exception\EncounterAlreadyExists;
 use Encounter\Encounter\Domain\Exception\InvalidEncounterDifficulty;
+use Encounter\Monster\Domain\Exception\InvalidChallengeRating;
 use Encounter\Monster\Domain\Exception\InvalidMonsterSize;
 use Encounter\Monster\Domain\Exception\InvalidSourceBook;
+use Encounter\Monster\Domain\Exception\MonsterDoesNotExist;
 use Shared\Domain\Exception\InvalidPositiveInteger;
 use Shared\Domain\ValueObject\Uuid;
 use Shared\Infrastructure\Symfony\Controller\ApiController;
@@ -55,6 +58,9 @@ final class CreateEncounterController extends ApiController
             CharacterDoesNotExist::class => Response::HTTP_BAD_REQUEST,
             CharacterDoesNotBelongToCampaign::class => Response::HTTP_BAD_REQUEST,
             InvalidEncounterDifficulty::class => Response::HTTP_INTERNAL_SERVER_ERROR,
+            InvalidCharacterLevel::class => Response::HTTP_BAD_REQUEST,
+            InvalidChallengeRating::class => Response::HTTP_BAD_REQUEST,
+            MonsterDoesNotExist::class => Response::HTTP_BAD_REQUEST,
         ];
     }
 
