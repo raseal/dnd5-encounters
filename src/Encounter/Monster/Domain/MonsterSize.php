@@ -26,7 +26,7 @@ final class MonsterSize extends StringValueObject
         'gargantuan' => self::GARGANTUAN,
     ];
 
-    private const VALID_ABBREVIATIONS = [
+    public const VALID_ABBREVIATIONS = [
         't' => self::TINY,
         's' => self::SMALL,
         'm' => self::MEDIUM,

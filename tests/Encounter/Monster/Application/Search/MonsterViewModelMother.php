@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Test\Encounter\Monster\Application\Search;
 
 use Encounter\Monster\Application\Search\MonsterViewModel;
+use Encounter\Monster\Domain\MonsterSize;
 use Faker\Factory;
+use Test\Encounter\Monster\Domain\SourceBookMother;
+use function sprintf;
 
 final class MonsterViewModelMother
 {
@@ -63,18 +66,21 @@ final class MonsterViewModelMother
 
     public static function random(): MonsterViewModel
     {
-        $source = Factory::create()->randomAscii();
+        $source = SourceBookMother::random()->value();
         $name = Factory::create()->text(15);
 
         return self::create(
             $name,
-            Factory::create()->randomAscii(),
+            Factory::create()->randomKey(MonsterSize::VALID_ABBREVIATIONS),
             Factory::create()->text(10),
             self::generateTokenURL($source, $name),
             $source,
             Factory::create()->randomNumber(),
             Factory::create()->randomNumber(),
-            [],
+            [
+                'average' => Factory::create()->numberBetween(1, 500),
+                'formula' => self::randomHPFormula(),
+            ],
             Factory::create()->text(20),
             Factory::create()->numberBetween(8, 22),
             Factory::create()->numberBetween(8, 22),
@@ -86,7 +92,7 @@ final class MonsterViewModelMother
             null,
             Factory::create()->text(10),
             null,
-            Factory::create()->text(5),
+            (string) Factory::create()->numberBetween(1, 30),
             null,
             null,
             null
@@ -96,5 +102,15 @@ final class MonsterViewModelMother
     private static function generateTokenURL(string $source, string $name): string
     {
         return $source.'/'.$name;
+    }
+
+    private static function randomHPFormula(): string
+    {
+        return sprintf(
+            '%sd%s+%s',
+            Factory::create()->numberBetween(1, 30),
+            Factory::create()->numberBetween(4, 12),
+            Factory::create()->numberBetween(0, 250)
+        );
     }
 }

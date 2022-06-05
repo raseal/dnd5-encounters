@@ -17,7 +17,7 @@ final class MonsterSizeMother
     public static function random(): MonsterSize
     {
         return self::create(
-            Factory::create()->randomKey(MonsterSize::VALID_TYPES)
+            Factory::create()->randomElement(MonsterSize::VALID_TYPES)
         );
     }
 }

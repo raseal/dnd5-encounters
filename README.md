@@ -54,3 +54,45 @@ https://5e.tools/data/bestiary/bestiary-tce.json
 
 XGE (Xanathar's Guide to Everything)
 https://5e.tools/data/bestiary/bestiary-xge.json
+# TODO: endpoints de crear/upd => devuelven el json de la entidad
+*******
+## Campaigns
+PUT, GET, DELETE: campaigns/id
+
+## Characters
+POST: characters/
+PATCH, GET, DELETE: characters/id
+
+## Monsters
+POST: monsters/
+GET: monsters/id
+
+## Encounters
+GET: encounters/challenge-rate/noideaAboutParams
+
+POST: encounters/
+    - campaignId
+    - inProgress:false
+    - mosnters [
+        - [data monster1 or ID?],
+        - [data monster2 or ID?],
+        - ...
+    ]
+    - players [
+        - [data player1 or ID?],
+        - [data player2 or ID?],
+        - ...
+    ]
+    - name
+    - round: 0
+    - turn: 0
+
+// combat starts! or Next turn! or Undo turn! 
+PUT: encounters/id
+    - inProgress: true
+    - round: 1
+    - turn: 1
+
+DELETE: encounters/id
+
+
