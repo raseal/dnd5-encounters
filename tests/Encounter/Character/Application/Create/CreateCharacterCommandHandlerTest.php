@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Encounter\Character\Application\Create;
 
+use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Domain\CampaignRepository;
 use Encounter\Character\Application\Create\CreateCharacter;
 use Encounter\Character\Application\Create\CreateCharacterCommandHandler;
@@ -29,7 +30,9 @@ final class CreateCharacterCommandHandlerTest extends TestCase
         $this->createCharacterCommandHandler = new CreateCharacterCommandHandler(
             new CreateCharacter(
                 $this->characterRepository,
-                $this->campaignRepository
+                new GetOneCampaign(
+                    $this->campaignRepository
+                )
             )
         );
     }

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Encounter\Encounter\Application\Create;
 
+use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Domain\CampaignId;
-use Encounter\Campaign\Domain\CampaignRepository;
 use Encounter\Character\Domain\Character;
 use Encounter\Character\Domain\Characters;
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
 use Encounter\Encounter\Domain\Encounter;
 use Encounter\Encounter\Domain\EncounterId;
@@ -25,7 +24,7 @@ final class CreateEncounter
 {
     public function __construct(
         private EncounterRepository $encounterRepository,
-        private CampaignRepository $campaignRepository,
+        private GetOneCampaign $getOneCampaign,
         private CreateMonsters $createMonsters
     ) {}
 
@@ -65,11 +64,7 @@ final class CreateEncounter
 
     private function ensureCampaignExists(CampaignId $campaignId): void
     {
-        $campaign = $this->campaignRepository->findById($campaignId);
-
-        if (null === $campaign) {
-            throw new CampaignDoesNotExist($campaignId->value());
-        }
+        $this->getOneCampaign->__invoke($campaignId);
     }
 
     private function ensureEncounterDoesNotExist(EncounterId $encounterId): void

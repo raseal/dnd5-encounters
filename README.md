@@ -21,7 +21,7 @@ There are some endpoints too for modifying the character info (such as their AC,
 |----------------|----------|------------------------------|----------------------------------------|
 | campaigns/     | `POST`   | Creates a campaign.          | [View sample](#campaigns-post-payload) |
 | campaigns/     | `GET`    | Retrieves all campaigns.     | WIP                                    |
-| campaigns/{id} | `GET`    | Retrieves specific campaign. | WIP                                    |
+| campaigns/{id} | `GET`    | Retrieves specific campaign. | -                                      |
 | campaigns/{id} | `PUT`    | Edits specific campaign.     | WIP                                    |
 | campaigns/{id} | `DELETE` | Removes specific campaign.   | WIP                                    |
 

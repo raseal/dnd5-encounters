@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Encounter\Encounter\Application\Create;
 
+use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Domain\CampaignRepository;
 use Encounter\Character\Domain\CharacterRepository;
 use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
@@ -42,7 +43,9 @@ final class CreateEncounterCommandHandlerTest extends TestCase
         $this->createEncounterCommandHandler = new CreateEncounterCommandHandler(
             new CreateEncounter(
                 $this->encounterRepository,
-                $this->campaignRepository,
+                new GetOneCampaign(
+                    $this->campaignRepository,
+                ),
                 $this->createMonsters
             ),
             $this->characterRepository,

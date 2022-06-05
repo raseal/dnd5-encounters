@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Encounter\Character\Application\Create;
 
+use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Domain\CampaignId;
-use Encounter\Campaign\Domain\CampaignRepository;
 use Encounter\Character\Domain\Character;
 use Encounter\Character\Domain\CharacterArmorClass;
 use Encounter\Character\Domain\CharacterHP;
@@ -15,7 +15,6 @@ use Encounter\Character\Domain\CharacterLevel;
 use Encounter\Character\Domain\CharacterName;
 use Encounter\Character\Domain\CharacterRepository;
 use Encounter\Character\Domain\CharacterSpeed;
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterAlreadyExists;
 use Encounter\Character\Domain\PlayerName;
 
@@ -23,7 +22,7 @@ final class CreateCharacter
 {
     public function __construct(
         private CharacterRepository $characterRepository,
-        private CampaignRepository $campaignRepository
+        private GetOneCampaign $getOneCampaign
     ) {}
 
     public function __invoke(
@@ -66,10 +65,6 @@ final class CreateCharacter
 
     private function ensureCampaignExists(CampaignId $campaignId): void
     {
-        $campaign = $this->campaignRepository->findById($campaignId);
-
-        if (null === $campaign) {
-            throw new CampaignDoesNotExist($campaignId->value());
-        }
+        $this->getOneCampaign->__invoke($campaignId);
     }
 }
