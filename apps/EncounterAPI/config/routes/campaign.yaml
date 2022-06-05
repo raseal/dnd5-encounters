@@ -2,3 +2,8 @@ create_campaign:
   path: /campaigns
   controller: EncounterAPI\Controller\Campaign\CreateCampaignController
   methods: [POST]
+
+get_one_campaign:
+  path: /campaigns/{id}
+  controller: EncounterAPI\Controller\Campaign\GetOneCampaignController
+  methods: [GET]
