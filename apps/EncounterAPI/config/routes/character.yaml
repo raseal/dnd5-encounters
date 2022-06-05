@@ -2,3 +2,8 @@ create_character:
   path: /characters
   controller: EncounterAPI\Controller\Character\CreateCharacterController
   methods: [POST]
+
+get_one_character:
+  path: /characters/{id}
+  controller: EncounterAPI\Controller\Character\GetOneCharacterController
+  methods: [GET]
