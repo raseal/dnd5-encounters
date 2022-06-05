@@ -6,6 +6,7 @@ namespace Test\Encounter\Encounter\Application\Create;
 
 use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Domain\CampaignRepository;
+use Encounter\Character\Application\GetOneCharacter\GetOneCharacter;
 use Encounter\Character\Domain\CharacterRepository;
 use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
@@ -48,7 +49,9 @@ final class CreateEncounterCommandHandlerTest extends TestCase
                 ),
                 $this->createMonsters
             ),
-            $this->characterRepository,
+            new GetOneCharacter(
+                $this->characterRepository
+            ),
             new SearchMonsters(
                 $this->monsterReadModel
             )

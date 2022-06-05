@@ -30,7 +30,7 @@ There are some endpoints too for modifying the character info (such as their AC,
 |-----------------|----------|-------------------------------|-----------------------------------------|
 | characters/     | `POST`   | Creates a character.          | [View sample](#characters-post-payload) |
 | characters/     | `GET`    | Retrieves all characters.     | WIP                                     |
-| characters/{id} | `GET`    | Retrieves specific character. | WIP                                     |
+| characters/{id} | `GET`    | Retrieves specific character. | -                                       |
 | characters/{id} | `PUT`    | Edits specific character.     | WIP                                     |
 | characters/{id} | `DELETE` | Removes specific character.   | WIP                                     |
 

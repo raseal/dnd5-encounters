@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Encounter\Encounter\Application\Create;
 
 use Encounter\Campaign\Domain\CampaignId;
-use Encounter\Character\Domain\Character;
+use Encounter\Character\Application\GetOneCharacter\GetOneCharacter;
 use Encounter\Character\Domain\CharacterId;
-use Encounter\Character\Domain\CharacterRepository;
 use Encounter\Character\Domain\Characters;
-use Encounter\Character\Domain\Exception\CharacterDoesNotExist;
 use Encounter\Encounter\Domain\EncounterId;
 use Encounter\Encounter\Domain\EncounterInProgress;
 use Encounter\Encounter\Domain\EncounterName;
@@ -53,7 +51,7 @@ final class CreateEncounterCommandHandler implements CommandHandler
 
     public function __construct(
         private CreateEncounter $createEncounter,
-        private CharacterRepository $characterRepository,
+        private GetOneCharacter $getOneCharacter,
         private SearchMonsters $searchMonsters
     ) {}
 
@@ -127,21 +125,10 @@ final class CreateEncounterCommandHandler implements CommandHandler
 
         foreach ($players as $player) {
             $collection->add(
-                $this->retrieveCharacter($player)
+                $this->getOneCharacter->__invoke(new CharacterId($player))
             );
         }
 
         return $collection;
-    }
-
-    private function retrieveCharacter(string $characterId): Character
-    {
-        $character = $this->characterRepository->findById(new CharacterId($characterId));
-
-        if (null === $character) {
-            throw new CharacterDoesNotExist($characterId);
-        }
-
-        return $character;
     }
 }

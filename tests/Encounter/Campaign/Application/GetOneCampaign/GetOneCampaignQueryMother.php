@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Encounter\Campaign\Application\GetOne;
+namespace Test\Encounter\Campaign\Application\GetOneCampaign;
 
 use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaignQuery;
 use Faker\Factory;
