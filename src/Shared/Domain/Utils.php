@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shared\Domain;
 
 use ReflectionClass;
+use Traversable;
 
 final class Utils
 {
@@ -18,5 +19,14 @@ final class Utils
         $reflect = new ReflectionClass($object);
 
         return $reflect->getShortName();
+    }
+
+    public static function first(Traversable $collection): mixed
+    {
+        foreach ($collection as $item) {
+            return $item;
+        }
+
+        return null;
     }
 }

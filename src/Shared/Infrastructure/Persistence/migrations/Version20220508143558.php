@@ -19,23 +19,6 @@ final class Version20220508143558 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql("CREATE TABLE `monster` (
-            `id` varchar(36) NOT NULL,
-            `name` varchar(250) NOT NULL,
-            `sourcebook` varchar(100) DEFAULT NULL,
-            `page` int,
-            `size` char(10) NOT NULL,
-            `cr` decimal(5,3) NOT NULL,
-            `img` varchar(250) DEFAULT NULL,
-            `init_bonus` int DEFAULT 0,
-            `hp_avg` int,
-            `hp_max` int,
-            `ac` int,
-            PRIMARY KEY (`id`),
-            KEY `name` (`name`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-        ");
-
         $this->addSql("CREATE TABLE `campaign` (
             `id` varchar(36) NOT NULL,
             `name` varchar(150) NOT NULL,
@@ -79,7 +62,7 @@ final class Version20220508143558 extends AbstractMigration
         $this->addSql("CREATE TABLE `encounter_participant` (
             `id` varchar(36) not null,
             `encounter_id` varchar(36) not null,
-            `participant_id` varchar(36) not null,
+            `participant_id` varchar(250) not null,
             `participant_type` varchar(1) COMMENT 'C: character - M: monster',
             `initiative_roll` int,
             `max_hp` int,
@@ -92,7 +75,6 @@ final class Version20220508143558 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql("DROP TABLE `monster`");
         $this->addSql("DROP TABLE `campaign`");
         $this->addSql("DROP TABLE `player_character`");
         $this->addSql("DROP TABLE `encounter`");

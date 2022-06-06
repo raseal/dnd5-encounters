@@ -15,7 +15,7 @@ final class Dice
         private PositiveInteger $sides
     ) {}
 
-    public function roll($times = 1, $maxRoll = false): PositiveInteger
+    public function roll(int $times = 1, bool $maxRoll = false): PositiveInteger
     {
         $total = 0;
 
