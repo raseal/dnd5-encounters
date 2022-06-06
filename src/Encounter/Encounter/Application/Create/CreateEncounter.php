@@ -12,14 +12,17 @@ use Encounter\Character\Domain\CharacterId;
 use Encounter\Character\Domain\Characters;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
 use Encounter\Encounter\Domain\CharacterIds;
+use Encounter\Encounter\Domain\Difficulty;
 use Encounter\Encounter\Domain\Encounter;
 use Encounter\Encounter\Domain\EncounterId;
 use Encounter\Encounter\Domain\EncounterInProgress;
 use Encounter\Encounter\Domain\EncounterName;
 use Encounter\Encounter\Domain\EncounterRepository;
 use Encounter\Encounter\Domain\Exception\EncounterAlreadyExists;
+use Encounter\Encounter\Domain\ExperiencePerPlayer;
 use Encounter\Encounter\Domain\MonsterIds;
 use Encounter\Encounter\Domain\RoundNumber;
+use Encounter\Encounter\Domain\TotalExperience;
 use Encounter\Encounter\Domain\TurnNumber;
 use Encounter\Monster\Application\GetOneMonster\GetOneMonster;
 use Encounter\Monster\Domain\MonsterId;
@@ -53,11 +56,11 @@ final class CreateEncounter
         $encounter = new Encounter(
             $encounterId,
             $campaignId,
-            null,
+            Difficulty::none(),
             $inProgress,
             $encounterName,
-            null,
-            null,
+            new TotalExperience(0),
+            new ExperiencePerPlayer(0),
             $roundNumber,
             $turnNumber
         );

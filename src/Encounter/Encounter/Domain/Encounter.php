@@ -17,19 +17,16 @@ final class Encounter extends AggregateRoot
     public function __construct(
         private EncounterId $encounterId,
         private CampaignId $campaignId,
-        private ?Difficulty $difficulty,
+        private Difficulty $difficulty,
         private EncounterInProgress $inProgress,
         private EncounterName $encounterName,
-        private ?TotalExperience $totalExperience,
-        private ?ExperiencePerPlayer $experiencePerPlayer,
+        private TotalExperience $totalExperience,
+        private ExperiencePerPlayer $experiencePerPlayer,
         private RoundNumber $roundNumber,
         private TurnNumber $turnNumber
     ) {
         $this->monsters = new Monsters([]);
         $this->characters = new Characters([]);
-        $this->difficulty = $this->difficulty ?? Difficulty::none();
-        $this->totalExperience = $this->totalExperience ?? new TotalExperience(0);
-        $this->experiencePerPlayer = $this->experiencePerPlayer ?? new ExperiencePerPlayer(0);
     }
 
     public function addMonsters(Monsters $monsters): void
