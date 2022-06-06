@@ -12,7 +12,6 @@ use Encounter\Encounter\Application\Create\CreateEncounterCommand;
 use Encounter\Encounter\Domain\Exception\EncounterAlreadyExists;
 use Encounter\Encounter\Domain\Exception\InvalidEncounterDifficulty;
 use Encounter\Monster\Domain\Exception\InvalidChallengeRating;
-use Encounter\Monster\Domain\Exception\InvalidMonsterSize;
 use Encounter\Monster\Domain\Exception\InvalidSourceBook;
 use Encounter\Monster\Domain\Exception\MonsterDoesNotExist;
 use Shared\Domain\Exception\InvalidPositiveInteger;
@@ -38,9 +37,7 @@ final class CreateEncounterController extends ApiController
                 false,
                 $payload['monsters'],
                 $payload['playersIds'],
-                $payload['encounterName'],
-                0,
-                0
+                $payload['encounterName']
             )
         );
 
@@ -51,7 +48,6 @@ final class CreateEncounterController extends ApiController
     {
         return [
             InvalidSourceBook::class => Response::HTTP_BAD_REQUEST,
-            InvalidMonsterSize::class => Response::HTTP_BAD_REQUEST,
             InvalidPositiveInteger::class => Response::HTTP_BAD_REQUEST,
             CampaignDoesNotExist::class => Response::HTTP_BAD_REQUEST,
             EncounterAlreadyExists::class => Response::HTTP_BAD_REQUEST,

@@ -18,9 +18,11 @@ use Encounter\Encounter\Domain\EncounterInProgress;
 use Encounter\Encounter\Domain\EncounterName;
 use Encounter\Encounter\Domain\EncounterRepository;
 use Encounter\Encounter\Domain\Exception\EncounterAlreadyExists;
+use Encounter\Encounter\Domain\MonsterIds;
 use Encounter\Encounter\Domain\RoundNumber;
 use Encounter\Encounter\Domain\TurnNumber;
-use Encounter\Monster\Application\Create\CreateMonsters;
+use Encounter\Monster\Application\GetOneMonster\GetOneMonster;
+use Encounter\Monster\Domain\MonsterId;
 use Encounter\Monster\Domain\Monsters;
 
 final class CreateEncounter
@@ -29,7 +31,7 @@ final class CreateEncounter
         private GetOneCharacter $getOneCharacter,
         private EncounterRepository $encounterRepository,
         private GetOneCampaign $getOneCampaign,
-        private CreateMonsters $createMonsters
+        private GetOneMonster $getOneMonster
     ) {}
 
     public function __invoke(
@@ -39,15 +41,14 @@ final class CreateEncounter
         EncounterName $encounterName,
         RoundNumber $roundNumber,
         TurnNumber $turnNumber,
-        Monsters $monsters,
+        MonsterIds $monsterIds,
         CharacterIds $characterIds
     ): void {
         $this->ensureCampaignExists($campaignId);
         $this->ensureEncounterDoesNotExist($encounterId);
         $characters = $this->retrieveCharacters($characterIds);
+        $monsters = $this->retrieveMonsters($monsterIds);
         $this->ensurePlayersBelongToTheCampaign($campaignId, $characters);
-
-        $this->createMonsters->__invoke($monsters);
 
         $encounter = new Encounter(
             $encounterId,
@@ -93,6 +94,20 @@ final class CreateEncounter
         }
 
         return $characters;
+    }
+
+    private function retrieveMonsters(MonsterIds $monsterIds): Monsters
+    {
+        $monsters = new Monsters([]);
+
+        /** @var MonsterId $monsterId */
+        foreach ($monsterIds as $monsterId) {
+            $monsters->add(
+                $this->getOneMonster->__invoke($monsterId)
+            );
+        }
+
+        return $monsters;
     }
 
     private function ensurePlayersBelongToTheCampaign(CampaignId $campaignId, Characters $characters): void

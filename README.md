@@ -93,11 +93,11 @@ Since this endpoint is read-only, the filters must be specified via the query-st
   "encounterName": "My first encounter",
   "monsters": [
     {
-      "name": "ancient white dragon",
+      "monsterName": "ancient white dragon",
       "sourceBook": "mm",
       "quantity": 1
     },{
-      "name": "aboleth",
+      "monsterName": "aboleth",
       "sourceBook": "mm",
       "quantity": 4
     }],

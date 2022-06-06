@@ -12,11 +12,9 @@ final class CreateEncounterCommand implements Command
         private string $encounterId,
         private string $campaignId,
         private bool $inProgress,
-        private array $monsters,
-        private array $players,
-        private string $encounterName,
-        private int $round,
-        private int $turn
+        private array $monsterIds,
+        private array $playerIds,
+        private string $encounterName
     ) {}
 
     public function encounterId(): string
@@ -34,28 +32,18 @@ final class CreateEncounterCommand implements Command
         return $this->inProgress;
     }
 
-    public function monsters(): array
+    public function monsterIds(): array
     {
-        return $this->monsters;
+        return $this->monsterIds;
     }
 
-    public function players(): array
+    public function playerIds(): array
     {
-        return $this->players;
+        return $this->playerIds;
     }
 
     public function encounterName(): string
     {
         return $this->encounterName;
-    }
-
-    public function round(): int
-    {
-        return $this->round;
-    }
-
-    public function turn(): int
-    {
-        return $this->turn;
     }
 }

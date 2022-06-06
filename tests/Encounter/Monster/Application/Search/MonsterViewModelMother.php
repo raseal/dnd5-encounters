@@ -12,6 +12,15 @@ use function sprintf;
 
 final class MonsterViewModelMother
 {
+    private const VALID_SIZES = [
+        't',
+        's',
+        'm',
+        'l',
+        'h',
+        'g',
+    ];
+
     public static function create(
         string $name,
         string $size,
@@ -71,7 +80,7 @@ final class MonsterViewModelMother
 
         return self::create(
             $name,
-            Factory::create()->randomKey(MonsterSize::VALID_ABBREVIATIONS),
+            Factory::create()->randomElement(self::VALID_SIZES),
             Factory::create()->text(10),
             self::generateTokenURL($source, $name),
             $source,

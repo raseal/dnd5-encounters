@@ -15,7 +15,7 @@ use Encounter\Encounter\Application\Create\CreateEncounter;
 use Encounter\Encounter\Application\Create\CreateEncounterCommandHandler;
 use Encounter\Encounter\Domain\EncounterRepository;
 use Encounter\Encounter\Domain\Exception\EncounterAlreadyExists;
-use Encounter\Monster\Application\Create\CreateMonsters;
+use Encounter\Monster\Application\GetOneMonster\GetOneMonster;
 use Encounter\Monster\Application\MonsterReadModel;
 use Encounter\Monster\Application\Search\SearchMonsters;
 use Encounter\Monster\Domain\Exception\MonsterDoesNotExist;
@@ -30,7 +30,6 @@ final class CreateEncounterCommandHandlerTest extends TestCase
     private EncounterRepository $encounterRepository;
     private CampaignRepository $campaignRepository;
     private CharacterRepository $characterRepository;
-    private CreateMonsters $createMonsters;
     private MonsterReadModel $monsterReadModel;
     private CreateEncounterCommandHandler $createEncounterCommandHandler;
 
@@ -40,7 +39,7 @@ final class CreateEncounterCommandHandlerTest extends TestCase
         $this->campaignRepository = $this->createMock(CampaignRepository::class);
         $this->characterRepository = $this->createMock(CharacterRepository::class);
         $this->monsterReadModel = $this->createMock(MonsterReadModel::class);
-        $this->createMonsters = $this->createMock(CreateMonsters::class);
+
         $this->createEncounterCommandHandler = new CreateEncounterCommandHandler(
             new CreateEncounter(
                 new GetOneCharacter(
@@ -50,10 +49,11 @@ final class CreateEncounterCommandHandlerTest extends TestCase
                 new GetOneCampaign(
                     $this->campaignRepository,
                 ),
-                $this->createMonsters
-            ),
-            new SearchMonsters(
-                $this->monsterReadModel
+                new GetOneMonster(
+                    new SearchMonsters(
+                        $this->monsterReadModel
+                    )
+                )
             )
         );
     }
@@ -108,6 +108,19 @@ final class CreateEncounterCommandHandlerTest extends TestCase
     public function should_fail_when_monster_does_not_exist(): void
     {
         $this->expectException(MonsterDoesNotExist::class);
+
+        $campaign = CampaignMother::random();
+        $character = CharacterMother::fromCampaignId($campaign->campaignId());
+
+        $this->campaignRepository
+            ->expects(self::once())
+            ->method('findById')
+            ->willReturn($campaign);
+
+        $this->characterRepository
+            ->expects(self::atLeastOnce())
+            ->method('findById')
+            ->willReturn($character);
 
         $command = CreateEncounterCommandMother::random();
         $this->createEncounterCommandHandler->__invoke($command);

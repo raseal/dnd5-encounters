@@ -7,7 +7,8 @@ namespace Test\Encounter\Encounter\Application\Create;
 use Encounter\Encounter\Application\Create\CreateEncounterCommand;
 use Faker\Factory;
 use Test\Encounter\Character\Domain\CharacterIdMother;
-use Test\Encounter\Monster\Domain\MonsterMother;
+use Test\Encounter\Monster\Domain\MonsterNameMother;
+use Test\Encounter\Monster\Domain\SourceBookMother;
 
 final class CreateEncounterCommandMother
 {
@@ -17,9 +18,7 @@ final class CreateEncounterCommandMother
         bool $inProgress,
         array $monsters,
         array $players,
-        string $encounterName,
-        int $round,
-        int $turn
+        string $encounterName
     ): CreateEncounterCommand {
         return new CreateEncounterCommand(
             $encounterId,
@@ -27,9 +26,7 @@ final class CreateEncounterCommandMother
             $inProgress,
             $monsters,
             $players,
-            $encounterName,
-            $round,
-            $turn
+            $encounterName
         );
     }
 
@@ -40,10 +37,8 @@ final class CreateEncounterCommandMother
             Factory::create()->uuid(),
             Factory::create()->boolean(),
             self::generateRandomMonsters(),
-            self::generateRandomCharacters(),
-            Factory::create()->name(),
-            Factory::create()->numberBetween(0, 15),
-            Factory::create()->numberBetween(0, 15)
+            self::generateRandomCharacterIds(),
+            Factory::create()->name()
         );
     }
 
@@ -54,21 +49,7 @@ final class CreateEncounterCommandMother
             $campaignId,
             Factory::create()->boolean(),
             self::generateRandomMonsters(),
-            self::generateRandomCharacters(),
-            Factory::create()->name(),
-            Factory::create()->numberBetween(0, 15),
-            Factory::create()->numberBetween(0, 15)
-        );
-    }
-
-    public static function fromMonsters(array $monsters): CreateEncounterCommand
-    {
-        return self::create(
-            Factory::create()->uuid(),
-            Factory::create()->uuid(),
-            Factory::create()->boolean(),
-            $monsters,
-            self::generateRandomCharacters(),
+            self::generateRandomCharacterIds(),
             Factory::create()->name(),
             Factory::create()->numberBetween(0, 15),
             Factory::create()->numberBetween(0, 15)
@@ -81,19 +62,9 @@ final class CreateEncounterCommandMother
         $monstersNumber = Factory::create()->numberBetween(1, 4);
 
         for ($i = 0; $i < $monstersNumber; $i++) {
-            $monster = MonsterMother::random();
-
             $monsters[] = [
-                'name' => $monster->monsterName()->value(),
-                'sourceBook' => $monster->sourceBook()->value(),
-                'page' => $monster->page()->value(),
-                'size' => $monster->monsterSize()->value(),
-                'cr' => $monster->challengeRating()->value(),
-                'img' => $monster->monsterImg()->value(),
-                'initBonus' => $monster->initiativeBonus()->value(),
-                'hpAvg' => $monster->HPAverage()->value(),
-                'hpMax' => $monster->HPMax()->value(),
-                'ac' => $monster->armorClass()->value(),
+                'monsterName' => MonsterNameMother::random()->value(),
+                'sourceBook' => SourceBookMother::random()->value(),
                 'quantity' => Factory::create()->numberBetween(1, 3),
             ];
         }
@@ -101,7 +72,7 @@ final class CreateEncounterCommandMother
         return $monsters;
     }
 
-    private static function generateRandomCharacters(): array
+    private static function generateRandomCharacterIds(): array
     {
         $characters = [];
         $charactersNumber = Factory::create()->numberBetween(1, 3);
