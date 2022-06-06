@@ -7,7 +7,7 @@ namespace Encounter\Campaign\Application\GetOneCampaign;
 use Encounter\Campaign\Domain\Campaign;
 use Encounter\Campaign\Domain\CampaignId;
 use Encounter\Campaign\Domain\CampaignRepository;
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
+use Encounter\Campaign\Domain\Exception\CampaignDoesNotExist;
 
 final class GetOneCampaign
 {

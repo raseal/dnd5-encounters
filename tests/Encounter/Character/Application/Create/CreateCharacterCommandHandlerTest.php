@@ -6,10 +6,10 @@ namespace Test\Encounter\Character\Application\Create;
 
 use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Domain\CampaignRepository;
+use Encounter\Campaign\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Application\Create\CreateCharacter;
 use Encounter\Character\Application\Create\CreateCharacterCommandHandler;
 use Encounter\Character\Domain\CharacterRepository;
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterAlreadyExists;
 use Encounter\Character\Domain\Exception\InvalidCharacterLevel;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Encounter\Character\Domain\Exception;
+namespace Encounter\Campaign\Domain\Exception;
 
 use Shared\Domain\Exception\DomainError;
 

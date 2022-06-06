@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EncounterAPI\Controller\Encounter;
 
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
+use Encounter\Campaign\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
 use Encounter\Character\Domain\Exception\CharacterDoesNotExist;
 use Encounter\Character\Domain\Exception\InvalidCharacterLevel;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EncounterAPI\Controller\Campaign;
 
 use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaignQuery;
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
+use Encounter\Campaign\Domain\Exception\CampaignDoesNotExist;
 use Shared\Domain\Exception\InvalidUuid;
 use Shared\Infrastructure\Symfony\Controller\ApiController;
 use Symfony\Component\HttpFoundation\Request;

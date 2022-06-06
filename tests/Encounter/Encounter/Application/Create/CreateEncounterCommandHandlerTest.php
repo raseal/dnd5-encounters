@@ -6,9 +6,9 @@ namespace Test\Encounter\Encounter\Application\Create;
 
 use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Domain\CampaignRepository;
+use Encounter\Campaign\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Application\GetOneCharacter\GetOneCharacter;
 use Encounter\Character\Domain\CharacterRepository;
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
 use Encounter\Character\Domain\Exception\CharacterDoesNotExist;
 use Encounter\Encounter\Application\Create\CreateEncounter;

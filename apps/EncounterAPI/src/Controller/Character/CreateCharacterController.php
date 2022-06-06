@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace EncounterAPI\Controller\Character;
 
+use Encounter\Campaign\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Application\Create\CreateCharacterCommand;
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
 use Encounter\Character\Domain\Exception\CharacterAlreadyExists;
 use Shared\Domain\Exception\InvalidUuid;
 use Shared\Domain\ValueObject\Uuid;

@@ -7,7 +7,7 @@ namespace Test\Encounter\Campaign\Application\GetOneCampaign;
 use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaignQueryHandler;
 use Encounter\Campaign\Domain\CampaignRepository;
-use Encounter\Character\Domain\Exception\CampaignDoesNotExist;
+use Encounter\Campaign\Domain\Exception\CampaignDoesNotExist;
 use PHPUnit\Framework\TestCase;
 use Test\Encounter\Campaign\Domain\CampaignMother;
 
