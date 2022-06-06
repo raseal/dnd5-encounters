@@ -43,14 +43,14 @@ final class CreateEncounterCommandHandlerTest extends TestCase
         $this->createMonsters = $this->createMock(CreateMonsters::class);
         $this->createEncounterCommandHandler = new CreateEncounterCommandHandler(
             new CreateEncounter(
+                new GetOneCharacter(
+                    $this->characterRepository
+                ),
                 $this->encounterRepository,
                 new GetOneCampaign(
                     $this->campaignRepository,
                 ),
                 $this->createMonsters
-            ),
-            new GetOneCharacter(
-                $this->characterRepository
             ),
             new SearchMonsters(
                 $this->monsterReadModel
@@ -119,11 +119,17 @@ final class CreateEncounterCommandHandlerTest extends TestCase
     {
         $this->expectException(CharacterDoesNotExist::class);
 
+        $campaign = CampaignMother::random();
         $monsters = MonstersViewModelMother::random();
 
         $this->monsterReadModel
             ->method('search')
             ->willReturn($monsters);
+
+        $this->campaignRepository
+            ->expects(self::once())
+            ->method('findById')
+            ->willReturn($campaign);
 
         $this->characterRepository
             ->expects(self::once())
@@ -144,11 +150,6 @@ final class CreateEncounterCommandHandlerTest extends TestCase
         $this->monsterReadModel
             ->method('search')
             ->willReturn($monsters);
-
-        $this->characterRepository
-            ->expects(self::atLeastOnce())
-            ->method('findById')
-            ->willReturn(CharacterMother::random());
 
         $this->campaignRepository
             ->expects(self::once())

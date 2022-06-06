@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Encounter\Encounter\Application\Create;
 
 use Encounter\Campaign\Domain\CampaignId;
-use Encounter\Character\Application\GetOneCharacter\GetOneCharacter;
 use Encounter\Character\Domain\CharacterId;
-use Encounter\Character\Domain\Characters;
+use Encounter\Encounter\Domain\CharacterIds;
 use Encounter\Encounter\Domain\EncounterId;
 use Encounter\Encounter\Domain\EncounterInProgress;
 use Encounter\Encounter\Domain\EncounterName;
@@ -51,7 +50,6 @@ final class CreateEncounterCommandHandler implements CommandHandler
 
     public function __construct(
         private CreateEncounter $createEncounter,
-        private GetOneCharacter $getOneCharacter,
         private SearchMonsters $searchMonsters
     ) {}
 
@@ -119,14 +117,12 @@ final class CreateEncounterCommandHandler implements CommandHandler
         );
     }
 
-    private function parseCharacters(array $players): Characters
+    private function parseCharacters(array $players): CharacterIds
     {
-        $collection = new Characters([]);
+        $collection = new CharacterIds([]);
 
         foreach ($players as $player) {
-            $collection->add(
-                $this->getOneCharacter->__invoke(new CharacterId($player))
-            );
+            $collection->add(new CharacterId($player));
         }
 
         return $collection;

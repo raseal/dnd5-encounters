@@ -6,9 +6,12 @@ namespace Encounter\Encounter\Application\Create;
 
 use Encounter\Campaign\Application\GetOneCampaign\GetOneCampaign;
 use Encounter\Campaign\Domain\CampaignId;
+use Encounter\Character\Application\GetOneCharacter\GetOneCharacter;
 use Encounter\Character\Domain\Character;
+use Encounter\Character\Domain\CharacterId;
 use Encounter\Character\Domain\Characters;
 use Encounter\Character\Domain\Exception\CharacterDoesNotBelongToCampaign;
+use Encounter\Encounter\Domain\CharacterIds;
 use Encounter\Encounter\Domain\Encounter;
 use Encounter\Encounter\Domain\EncounterId;
 use Encounter\Encounter\Domain\EncounterInProgress;
@@ -23,6 +26,7 @@ use Encounter\Monster\Domain\Monsters;
 final class CreateEncounter
 {
     public function __construct(
+        private GetOneCharacter $getOneCharacter,
         private EncounterRepository $encounterRepository,
         private GetOneCampaign $getOneCampaign,
         private CreateMonsters $createMonsters
@@ -36,10 +40,11 @@ final class CreateEncounter
         RoundNumber $roundNumber,
         TurnNumber $turnNumber,
         Monsters $monsters,
-        Characters $characters
+        CharacterIds $characterIds
     ): void {
         $this->ensureCampaignExists($campaignId);
         $this->ensureEncounterDoesNotExist($encounterId);
+        $characters = $this->retrieveCharacters($characterIds);
         $this->ensurePlayersBelongToTheCampaign($campaignId, $characters);
 
         $this->createMonsters->__invoke($monsters);
@@ -74,6 +79,20 @@ final class CreateEncounter
         if (null !== $encounter) {
             throw new EncounterAlreadyExists($encounterId->value());
         }
+    }
+
+    private function retrieveCharacters(CharacterIds $characterIds): Characters
+    {
+        $characters = new Characters([]);
+
+        /** @var CharacterId $characterId */
+        foreach ($characterIds as $characterId) {
+            $characters->add(
+                $this->getOneCharacter->__invoke($characterId)
+            );
+        }
+
+        return $characters;
     }
 
     private function ensurePlayersBelongToTheCampaign(CampaignId $campaignId, Characters $characters): void
